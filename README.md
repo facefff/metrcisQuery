@@ -1,4 +1,5 @@
 ### 通过prometheus API查询保存数据到 CSV 以及 mysql
+需要先创建好./data 和 ./targets 目录
 节点列表见nodes.txt  
 镜像列表见image.txt  
 上述两个列表在运行主函数时会自动生成
