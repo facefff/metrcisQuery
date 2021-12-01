@@ -92,23 +92,23 @@ def getMetric(duration, metric, serviceIp='', nodeIp="", container=""):
     logger = logging.getLogger('prometheusQuery')
     logger.info("执行查询：%s" % url)
 
-    value = []
+    value = 0
 
     response = requests.request('GET', url)
     if response.status_code == 200:
-        if len(response.json()['data']['result']) != 0:
+        length = len(response.json()['data']['result'])
+        if length != 0:
             response = response.json()['data']['result']
             for res in response:
-                value = res['value'][1]
+                value += float(res['value'][1])
                 # Unix时间戳转成字符串，打包成 [时间，值] 列表
                 # t = datetime.datetime.fromtimestamp(res['value'][0]).strftime('%Y-%m-%d %H:%M:%S')
                 # time_data = [t, res['value'][1]]
                 # value.append(time_data)
+            value /= length
         else:
-            value = 0
             logger.error(str(nodeIp) + ' : ' + str(container) + ' : ' + metric + "获取结果为空")
     else:
-        value = 0
         logger.error(nodeIp + container + metric + "请求失败")
 
     return value
