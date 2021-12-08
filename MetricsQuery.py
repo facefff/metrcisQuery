@@ -18,10 +18,8 @@ def getMetric(duration, metric, serviceIp='', nodeIp="", container=""):
 
     # 节点cpu使用率(1-(cpu空闲时间 / 总的cpu时间))
     if metric == 'node_cpu_rate':
-        expr = '(1- sum(increase(node_cpu_seconds_total{instance=~"' + nodeIp + '.*",mode="idle"}[' + str(
-            duration) + 'm])) by (instance) ' \
-                        '/ sum(increase(node_cpu_seconds_total{instance=~"' + nodeIp + '.*"}[' + str(
-            duration) + 'm])) by (instance)) * 100'
+        expr = '(1- sum(increase(node_cpu_seconds_total{instance=~"' + nodeIp + '.*",mode="idle"}[' + duration + '])) by (instance) ' \
+                        '/ sum(increase(node_cpu_seconds_total{instance=~"' + nodeIp + '.*"}[' + duration + '])) by (instance)) * 100'
 
     # 节点load_average，1分钟
     elif metric == 'node_load1m':
@@ -47,44 +45,44 @@ def getMetric(duration, metric, serviceIp='', nodeIp="", container=""):
 
     # 节点前一分钟接收的网络数据量
     elif metric == 'node_network_rcv_bytes':
-        expr = 'increase(node_network_receive_bytes_total{instance=~"' + nodeIp + '.*", device!="lo"}[1m])'
+        expr = 'increase(node_network_receive_bytes_total{instance=~"' + nodeIp + '.*", device!="lo"}[' + duration + '])'
 
     # 节点前一分钟发出的网络数据量
     elif metric == 'node_network_transmit_bytes':
-        expr = 'increase(node_network_transmit_bytes_total{instance=~"' + nodeIp + '.*", device!="lo"}[1m])'
+        expr = 'increase(node_network_transmit_bytes_total{instance=~"' + nodeIp + '.*", device!="lo"}[' + duration + '])'
 
     # container容器前一分钟占用的cpu时间(8个核加起来总的)
     elif metric == 'container_cpu_usage_time':
         expr = 'sum by (container_label_io_kubernetes_container_name)' \
-               '(increase(container_cpu_usage_seconds_total{container_label_io_kubernetes_container_name=~"' + container + '.*"}[1m]))'
+               '(increase(container_cpu_usage_seconds_total{container_label_io_kubernetes_container_name=~"' + container + '.*"}[' + duration + ']))'
 
     # container容器当前使用的物理内存 bytes
     elif metric == 'container_rss_bytes':
         expr = 'sum by (container_label_io_kubernetes_container_name)' \
-               '(container_memory_rss{container_label_io_kubernetes_container_name=~"' + container + '.*"})'
+               '(container_memory_rss{container_label_io_kubernetes_container_name=~"' + container + '.*"}[' + duration + '])'
 
     # container容器 load_average 10s
     elif metric == 'container_load10s':
         expr = 'sum by (container_label_io_kubernetes_container_name)' \
-               '(container_cpu_load_average_10s{container_label_io_kubernetes_container_name=~"' + container + '.*"})'
+               '(container_cpu_load_average_10s{container_label_io_kubernetes_container_name=~"' + container + '.*"}[' + duration + '])'
 
     # container容器前一分钟接收的网络数据量
     elif metric == 'container_network_rcv_bytes':
-        expr = 'increase(container_network_receive_bytes_total{container_label_io_kubernetes_pod_name=~"' + container + '.*"}[1m])'
+        expr = 'increase(container_network_receive_bytes_total{container_label_io_kubernetes_pod_name=~"' + container + '.*"}[' + duration + '])'
 
     # container容器前一分钟发出的网络数据量
     elif metric == 'container_network_transmit_bytes':
-        expr = 'increase(container_network_transmit_bytes_total{container_label_io_kubernetes_pod_name=~"' + container + '.*"}[1m])'
+        expr = 'increase(container_network_transmit_bytes_total{container_label_io_kubernetes_pod_name=~"' + container + '.*"}[' + duration + '])'
 
     # container容器前一分钟的文件写 bytes
     elif metric == 'container_fs_write_bytes':
         expr = 'sum by (container_label_io_kubernetes_container_name)' \
-               '(increase(container_fs_writes_bytes_total{container_label_io_kubernetes_container_name=~"' + container + '.*"}[1m]))'
+               '(increase(container_fs_writes_bytes_total{container_label_io_kubernetes_container_name=~"' + container + '.*"}[' + duration + ']))'
 
     # container容器前一分钟的文件读 bytes
     elif metric == 'container_fs_read_bytes':
         expr = 'sum by (container_label_io_kubernetes_container_name)' \
-               '(increase(container_fs_reads_bytes_total{container_label_io_kubernetes_container_name=~"' + container + '.*"}[1m]))'
+               '(increase(container_fs_reads_bytes_total{container_label_io_kubernetes_container_name=~"' + container + '.*"}[' + duration + ']))'
 
     # 拼装请求
     url = head + expr
