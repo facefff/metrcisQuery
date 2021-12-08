@@ -21,7 +21,7 @@ data_num = 300
 # 服务列表
 serviceList = {}
 # 服务列表文件
-path = r'./targets/service_name.txt'
+path = setting.target_path + 'images.txt'
 
 if os.path.isfile(path):
     with open(path, "r+") as f:
