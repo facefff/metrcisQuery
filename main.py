@@ -1,6 +1,7 @@
 import logging
 import time
 import threading
+import os
 import setting
 
 from utils import invert_dict
@@ -15,6 +16,12 @@ queryDuration = setting.queryDuration  # 在prometheus查询的时间跨度，�
 
 
 def main():
+    # 创建数据/待查询目标的目录
+    if not os.path.exists(setting.target_path):
+        os.mkdir(setting.target_path)
+    if not os.path.exists(setting.data_path):
+        os.mkdir(setting.data_path)
+
     # 配置日志打印格式
     logging.basicConfig(level=logging.INFO, format=setting.logformat)
 
