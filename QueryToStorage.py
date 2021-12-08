@@ -100,7 +100,7 @@ def save_to_storage(monitor, values):
     :param values  被监控的各项指标数据列表
     """
     save_to_csv(monitor, values)
-    save_to_mysql(monitor, values)
+    # save_to_mysql(monitor, values)
 
 
 def queryToStorage(duration=1, nodeIp="", container="", nodeDict={}, serviceIp=""):
