@@ -25,13 +25,13 @@ def main():
     # 可以通过访问 http://10.236.101.12:5000/v2/_catalog
     # 获取到镜像列表，镜像和容器同名，进而获取到容器列表
     # 从文本文件读取容器名（实际上为镜像名）
-    with open("targets/images.txt", "r") as img:
+    with open(setting.target_path + "images.txt", "r") as img:
         containers = img.read()
         containers = containers.split(',')
         img.close()
 
     # 从文本文件读取节点列表
-    with open("targets/nodes.txt", "r") as f:
+    with open(setting.target_path + "nodes.txt", "r") as f:
         nodes = f.read()
         nodes = nodes.split(',')
         f.close()
@@ -60,9 +60,7 @@ def main():
         t.start()
 
     # 主线程等待
-    # 为每个从 prometheus 查询数据并存储的操作预留 2S 的处理时间（1S不够，试过了）
-    time.sleep((queryInterval + 2) * repeatTimes)
-
+    time.sleep(queryInterval * repeatTimes)
 
 
 if __name__ == '__main__':

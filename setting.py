@@ -3,7 +3,12 @@
 # log 日期格式
 logformat = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 
-#prometheus query 参数
+# 数据目录
+data_path = r'./data/'
+# 待查询对象列表存储目录
+target_path = r'./targets/'
+
+# prometheus query 参数
 serviceIp = "10.236.101.12:30003"  # prometheus地址
 queryInterval = 5  # 查询间隔，默认5s
 repeatTimes = 10000  # 重复查询次数，默认时5s * 10000
@@ -16,7 +21,7 @@ user = 'root'
 passwd = 'root123456'
 db = 'data'
 
-# ES 参数
+# ES 路径参数
 ES_host = [
     '10.236.101.12:31200'
 ]

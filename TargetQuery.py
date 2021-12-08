@@ -1,6 +1,7 @@
 import logging
 import requests
 import re
+import setting
 
 
 def getTargetsStatus(serviceIp=''):
@@ -52,6 +53,7 @@ def getNodeExporterIp(serviceIp=''):
     logger = logging.getLogger('getting nodes.')
     logger.info("获取node-exporter IP地址：%s" % url)
     response = requests.request('GET', url)
+    target_path = setting.target_path + 'nodes.txt'
 
     exporter_dict = {}
     if response.status_code == 200:
@@ -66,7 +68,7 @@ def getNodeExporterIp(serviceIp=''):
                     exporter_dict[target['discoveredLabels']['__meta_kubernetes_endpoint_node_name']] = \
                         target['discoveredLabels']['__address__'].split(':')[0]
 
-    with open('./targets/nodes.txt', 'w+') as f:
+    with open(target_path, 'w+') as f:
         f.write(exporter_dict['k8s-node1'] + ',' + exporter_dict['k8s-node2'])
         f.close()
 
@@ -74,7 +76,7 @@ def getNodeExporterIp(serviceIp=''):
 
 
 def getContainers(serviceIp=''):
-    image_path = r'./targets/images.txt'
+    image_path = setting.target_path + 'images.txt'
 
     url = "http://" + serviceIp + "/api/v1/query?query=kube_pod_container_info{container=~\"ts-.*\"}"
     response = requests.request('GET', url)

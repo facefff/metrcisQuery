@@ -49,7 +49,7 @@ def save_to_csv(monitor, values):
     :param cur  mysql游标
     :return  ./data/*.csv
     """
-    path = r"./data/"
+    path = setting.data_path
     if monitor.startswith('k8s'):
         path = path + "node_metrics.csv"
         if not os.path.isfile(path):
