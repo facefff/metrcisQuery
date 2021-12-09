@@ -77,11 +77,14 @@ def getNodeExporterIp(serviceIp=''):
 
 def getContainers(serviceIp=''):
     image_path = setting.target_path + 'images.txt'
+    imgs = set()
 
     url = "http://" + serviceIp + "/api/v1/query?query=kube_pod_container_info{container=~\"ts-.*\"}"
     response = requests.request('GET', url)
+    for c in response.json()['data']['result']:
+        imgs.add(c['metric']['container'])
 
     with open(image_path, mode='w') as f:
-        for c in response.json()['data']['result']:
-            f.write(c['metric']['container'] + ',')
+        for i in imgs:
+            f.write(i + ',')
         f.close()
