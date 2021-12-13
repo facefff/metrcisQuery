@@ -7,12 +7,12 @@ from decimal import Decimal
 from MetricsQuery import getMetric
 from utils import get_mysql_cursor
 
-node_header = ['id', 'node_name', 'time', 'node_cpu_rate', 'node_load1m',
+node_header = ['id', 'node_name', 'timestamp', 'node_cpu_rate', 'node_load1m',
                'node_load5m', 'node_load15m', 'node_disk_rate',
                'node_ram_rate', 'node_network_rcv_bytes',
                'node_network_transmit_bytes']
 
-container_header = ['id', 'container_name', 'time', 'container_cpu_usage_time', 'container_rss_bytes',
+container_header = ['id', 'container_name', 'timestamp', 'container_cpu_usage_time', 'container_rss_bytes',
                     'container_load10s', 'container_network_rcv_bytes',
                     'container_network_transmit_bytes', 'container_fs_read_bytes',
                     'container_fs_write_bytes']
